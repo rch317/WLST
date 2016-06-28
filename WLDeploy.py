@@ -1,18 +1,18 @@
 ##Connect to the admin server
 connect('weblogic','yourpassword','t3://ermsitsoa02:7002')
+
 ##Set the target server to deploy to
 target = 'AdminServer'
-##Get the number of files that need to be deployed
-count = len(open('/home/soamgr/scripts/deploy.txt','r').readlines(  ))
-##Set the location of the file that has the .ear files to be deployed
-f = open(r'/home/soamgr/scripts/deploy.txt','r')
-##Start by opening the file and start readin line by line
-print f
-for i in range(count):
-       line=f.readline()
-       line1=line[:-1]
-       appName='/orasoa/ERM_Releases/current/'+line1+'.ear'
-       print '*****************'+line
+
+## Read through our file and deploy what we have
+with open('deploy.txt') as myFile:
+    for line in myFile:
+       line=line[:-1];
+       ### Should probably wrap some sanity checks around this...
+       appName='/orasoa/ERM_Releases/current/'+line+'.ear';
+
+       ### Start deploying
+       print '*****************'+line;
        edit()
        startEdit()
        stopApplication(appName=line1)
@@ -21,5 +21,6 @@ for i in range(count):
        startApplication(appName=line1)
        save()
        activate()
-f.close()
 
+### exit cleanly
+exit(0);
